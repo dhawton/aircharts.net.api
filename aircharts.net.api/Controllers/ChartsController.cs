@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using aircharts.net.api.Models;
 
 namespace aircharts.net.api.Controllers
@@ -21,23 +18,35 @@ namespace aircharts.net.api.Controllers
         }
 
         // GET: /v2/Airport/{id}
-        // @TODO : Add support for multiple airports in list, IE: {id},{id},{id}
+        // @TODO : Create returnable object as present in PHP v2, use Airport Model?
         [HttpGet("Airport/{id}")]
         public IActionResult GetCharts([FromRoute] string id)
         {
+            Dictionary<string, IOrderedQueryable<Charts>> chartResults = new Dictionary<string, IOrderedQueryable<Charts>>();
+            IOrderedQueryable<Charts> charts;
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var charts = _context.Charts.Where(m => m.Iata == id || m.Icao == id).OrderBy(m => m.Chartname);
-
-            if (charts == null)
+            if (id.Contains(","))
             {
-                return NotFound();
+                id = id.Replace(" ", String.Empty); // Remove spaces
+                string[] ids = id.Split(','); // Now split up list
+                foreach (string airportId in ids)
+                {
+                    charts = _context.Charts.Where(m => m.Iata == airportId || m.Icao == airportId).OrderBy(m => m.Chartname);
+                    chartResults.Add(airportId, charts);
+                }
+            }
+            else
+            {
+                charts = _context.Charts.Where(m => m.Iata == id || m.Icao == id).OrderBy(m => m.Chartname);
+                chartResults.Add(id, charts);
             }
 
-            return Ok(charts);
+            return Ok(chartResults);
         }
 
         private bool ChartsExists(string id)
