@@ -1,0 +1,72 @@
+﻿@model aircharts.net.api.Models.Charts
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Charts</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Icao)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Icao)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Iata)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Iata)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Country)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Country)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Airportname)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Airportname)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Chartname)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Chartname)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Url)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Url)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Flag)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Flag)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CreatedAt)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UpdatedAt)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UpdatedAt)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

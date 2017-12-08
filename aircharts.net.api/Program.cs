@@ -16,10 +16,4 @@ namespace aircharts.net.api
                 .UseStartup<Startup>()
                 .Build();
     }
-
-    public class MyContext : DbContext
-    {
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
-            optionsBuilder.UseMySql(@"Server=localhost;database=airchart;uid=jsdlfhj;pwd=hasdkljfhashf;");
-    }
 }
