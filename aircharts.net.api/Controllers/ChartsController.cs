@@ -20,7 +20,7 @@ namespace aircharts.net.api.Controllers
         [HttpGet("/v3/charts")]
         public async Task<IEnumerable<Chart>> GetCharts()
         {
-            return await _context.Charts.Include(m => m.ID).ToListAsync();
+            return await _context.Charts.Include(m => m.Id).ToListAsync();
         }
     }
 }

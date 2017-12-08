@@ -16,7 +16,7 @@ namespace aircharts.net.api.Models
     public class Chart
     {
         [Key, MaxLength(100)]
-        public Guid ID { get; }
+        public Guid Id { get; }
         public string Icao { get; }
         public string Iata { get; }
         public string Country { get; }
