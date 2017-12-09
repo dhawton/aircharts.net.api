@@ -1,6 +1,8 @@
 ﻿using aircharts.net.api.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +22,18 @@ namespace aircharts.net.api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AirchartContext>(options => options.UseMySql(Configuration["ConnectionStrings:Default"]));
-
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials();
+                    });
+            });
             services.AddMvc();
         }
 
@@ -31,6 +44,7 @@ namespace aircharts.net.api
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors("AllowAll");
 
             app.UseMvc();
         }
