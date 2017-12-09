@@ -17,34 +17,24 @@ namespace aircharts.net.api
             string[] types = {"General", "SID", "STAR", "Intermediate", "Approach"};
             foreach (string t in types)
             {
-                IOrderedQueryable<Charts> charts;
-                if (filter != null)
-                {
-                    if (filter.Contains(":"))
-                    {
-                        string[] filterParts = filter.Split(":");
-                        charts = context.Charts.Where(m => m.Iata == id || m.Icao == id)
-                            .Where(m => m.Charttype == t)
-                            .Where(m => m.Charttype == filterParts[0])
-                            .Where(m => m.Chartname.Contains(filterParts[1]))
-                            .OrderBy(m => m.Chartname);
+                IQueryable<Charts> charts;
+                string chartType = null;
+                if (filter != null && filter.Contains(":")) {
+                    string[] filterParts = filter.Split(":");
+                    chartType = filterParts[0];
+                    filter = filterParts[1];
+                }
+                charts = context.Charts
+                                .Where(m => m.Icao == id || m.Iata == id)
+                                .Where(m => m.Charttype == t);
+                if (chartType!= null) {
+                    charts = charts.Where(m => m.Charttype == chartType);
+                }
+                if (filter != null) {
+                    charts = charts.Where(m => m.Chartname.Contains(filter));
+                }
 
-                    }
-                    else
-                    {
-                        charts = context.Charts.Where(m => m.Iata == id || m.Icao == id)
-                            .Where(m => m.Charttype == t)
-                            .Where(m => m.Chartname.Contains(filter))
-                            .OrderBy(m => m.Chartname);
-                    }
-                }
-                else
-                {
-                    charts = context.Charts.Where(m => m.Iata == id || m.Icao == id)
-                        .Where(m => m.Charttype == t)
-                        .OrderBy(m => m.Chartname);
-                }
-                this.Charts.Add(t, charts);
+                this.Charts.Add(t, charts.OrderBy(m => m.Chartname));
             }
         }
     }
