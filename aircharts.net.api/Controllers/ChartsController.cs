@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using aircharts.net.api.Models;
 
 namespace aircharts.net.api.Controllers
@@ -18,11 +19,11 @@ namespace aircharts.net.api.Controllers
         }
 
         // GET: /v2/Airport/{id}
-        // @TODO : Create returnable object as present in PHP v2, use Airport Model?
         [HttpGet("Airport/{id}")]
         public IActionResult GetCharts([FromRoute] string id)
         {
             Dictionary<string, Airport> chartResults = new Dictionary<string, Airport>();
+            string filter = HttpContext.Request.Query["filter"];
 
             if (!ModelState.IsValid)
             {
@@ -35,13 +36,13 @@ namespace aircharts.net.api.Controllers
                 string[] ids = id.Split(','); // Now split up list
                 foreach (string airportId in ids)
                 {
-                    chartResults.Add(airportId, new Airport(_context, airportId));
+                    chartResults.Add(airportId, new Airport(_context, airportId, filter));
                 }
 
             }
             else
             {
-                chartResults.Add(id, new Airport(_context, id));
+                chartResults.Add(id, new Airport(_context, id, filter));
             }
 
             return Ok(chartResults);
