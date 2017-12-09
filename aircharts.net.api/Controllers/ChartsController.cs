@@ -22,8 +22,7 @@ namespace aircharts.net.api.Controllers
         [HttpGet("Airport/{id}")]
         public IActionResult GetCharts([FromRoute] string id)
         {
-            Dictionary<string, IOrderedQueryable<Charts>> chartResults = new Dictionary<string, IOrderedQueryable<Charts>>();
-            IOrderedQueryable<Charts> charts;
+            Dictionary<string, Airport> chartResults = new Dictionary<string, Airport>();
 
             if (!ModelState.IsValid)
             {
@@ -36,14 +35,13 @@ namespace aircharts.net.api.Controllers
                 string[] ids = id.Split(','); // Now split up list
                 foreach (string airportId in ids)
                 {
-                    charts = _context.Charts.Where(m => m.Iata == airportId || m.Icao == airportId).OrderBy(m => m.Chartname);
-                    chartResults.Add(airportId, charts);
+                    chartResults.Add(airportId, new Airport(_context, airportId));
                 }
+
             }
             else
             {
-                charts = _context.Charts.Where(m => m.Iata == id || m.Icao == id).OrderBy(m => m.Chartname);
-                chartResults.Add(id, charts);
+                chartResults.Add(id, new Airport(_context, id));
             }
 
             return Ok(chartResults);

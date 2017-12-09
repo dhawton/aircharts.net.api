@@ -19,7 +19,7 @@
     "aircharts.net.api": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "v2/Airport/KNPA",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
