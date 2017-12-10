@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  aircharts.net.api:
+    image: aircharts.net.api
+    build:
+      context: .
+      dockerfile: aircharts.net.api/Dockerfile
